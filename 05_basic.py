@@ -1,6 +1,12 @@
 import streamlit as st
 import pandas as pd
 
+# st.set_page_config(
+#     page_title='나의 첫 Steamlit 앱',
+#     page_icon='😊',
+#     layout='wide'
+# )
+
 df_menu = pd.DataFrame({
     '메뉴명':['아메리카노', '카페라떼', '카푸치노', '말차라떼'],
     '가격':[4500, 5000, 5500, 6000]
