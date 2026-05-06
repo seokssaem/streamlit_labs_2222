@@ -10,7 +10,7 @@ Johns Hopkins University의 COVID-19 공개 데이터셋을 활용하여
   - time_series_covid19_recovered_global.csv  (회복자)
 
 실행 방법:
-  streamlit run 10_kovid19.py
+  streamlit run 10_covid19.py
 
 핵심 학습 포인트:
   1. st.file_uploader  : 파일 업로드 위젯

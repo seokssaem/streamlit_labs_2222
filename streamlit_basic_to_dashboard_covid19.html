@@ -1,0 +1,672 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Streamlit 기초부터 실전 예제까지 | 석쌤 수업자료</title>
+<meta name="description" content="Streamlit 기초, 입력 위젯, 파일 업로더, 레이아웃, Plotly 대시보드 실습 웹페이지" />
+<style>
+:root{--bg:#f6f8fb;--ink:#172033;--muted:#667085;--card:#fff;--line:#e6e9f0;--brand:#4f46e5;--brand2:#06b6d4;--accent:#ffb020;--code:#0d1222;--code2:#151b2e}
+*{box-sizing:border-box} html{scroll-behavior:smooth} body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",Roboto,Arial,sans-serif;background:radial-gradient(circle at top left,#e8f4ff 0,#f6f8fb 36%,#f8fafc 100%);color:var(--ink);line-height:1.65}
+a{color:inherit;text-decoration:none} .layout{display:grid;grid-template-columns:280px 1fr;min-height:100vh} aside{position:sticky;top:0;height:100vh;overflow:auto;padding:24px 18px;border-right:1px solid var(--line);background:rgba(255,255,255,.78);backdrop-filter:blur(14px)} .brand{display:flex;gap:10px;align-items:center;margin-bottom:22px} .logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,var(--brand),var(--brand2));display:grid;place-items:center;color:white;font-weight:900;box-shadow:0 10px 30px rgba(79,70,229,.25)} .brand h1{font-size:17px;margin:0;line-height:1.25} .brand p{font-size:12px;margin:2px 0 0;color:var(--muted)} nav{display:grid;gap:7px} nav a{display:flex;gap:10px;align-items:center;padding:9px 10px;border-radius:12px;color:#344054;font-size:14px} nav a:hover{background:#eef2ff;color:#3730a3} nav span{font-size:11px;color:var(--brand);font-weight:800} .side-note{margin-top:20px;padding:14px;border-radius:16px;background:#f8fafc;border:1px solid var(--line);font-size:13px;color:var(--muted)} main{padding:42px 48px 80px;max-width:1180px;width:100%} .hero{position:relative;overflow:hidden;padding:42px;border-radius:30px;background:linear-gradient(135deg,#111827 0%,#1e1b4b 52%,#155e75 100%);color:white;box-shadow:0 30px 90px rgba(15,23,42,.22)} .hero:after{content:"";position:absolute;right:-120px;top:-80px;width:360px;height:360px;border-radius:50%;background:rgba(255,255,255,.1)} .badge{display:inline-flex;gap:8px;align-items:center;padding:7px 12px;border:1px solid rgba(255,255,255,.25);border-radius:999px;background:rgba(255,255,255,.12);font-size:13px} .hero h1{font-size:clamp(32px,5vw,58px);line-height:1.08;margin:18px 0 14px;letter-spacing:-.04em} .hero p{font-size:18px;max-width:760px;color:#dbeafe;margin:0} .hero-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:28px} .mini{padding:15px;border-radius:18px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.16)} .mini strong{display:block;font-size:22px} .mini span{font-size:13px;color:#dbeafe} .section-title{margin:42px 0 16px} .section-title h2{font-size:28px;margin:0 0 6px;letter-spacing:-.02em} .section-title p{margin:0;color:var(--muted)} .setup-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px} .panel,.lesson-card{background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:24px;box-shadow:0 16px 48px rgba(15,23,42,.08)} .panel{padding:24px} .panel h3{margin:0 0 12px} .check{display:grid;gap:10px;margin:0;padding:0;list-style:none} .check li{display:flex;gap:10px;align-items:flex-start} .check li:before{content:"✓";flex:0 0 22px;height:22px;border-radius:50%;background:#ecfdf3;color:#039855;display:grid;place-items:center;font-weight:900;font-size:13px} .cmd{background:#0d1222;color:#dbeafe;padding:14px;border-radius:14px;overflow:auto;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px} .folder-tree{background:linear-gradient(180deg,#0d1222,#151b2e);color:#dbeafe;padding:18px;border-radius:18px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:14px;line-height:1.5;overflow:auto}.folder-tree ul{list-style:none;margin:0;padding-left:22px;border-left:1px dashed rgba(219,234,254,.25)}.folder-tree>ul{padding-left:0;border-left:0}.folder-tree li{position:relative;margin:7px 0;padding-left:8px;white-space:nowrap}.folder-tree li::before{content:"";position:absolute;left:-22px;top:14px;width:18px;border-top:1px dashed rgba(219,234,254,.25)}.folder-tree>ul>li::before{display:none}.tree-root{display:inline-flex;align-items:center;gap:8px;font-weight:900;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);padding:7px 10px;border-radius:12px}.tree-folder,.tree-file{display:inline-flex;align-items:center;gap:8px;padding:3px 0}.tree-folder{color:#fde68a;font-weight:800}.tree-file{color:#dbeafe}.tree-muted{color:#94a3b8} .lesson-card{padding:26px;margin:18px 0;scroll-margin-top:20px} .lesson-card:before{content:attr(data-step);display:inline-grid;place-items:center;width:42px;height:42px;border-radius:16px;background:linear-gradient(135deg,var(--brand),var(--brand2));color:white;font-weight:900;float:right} .lesson-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-start;margin-bottom:15px} .eyebrow{font-size:12px;font-weight:900;color:var(--brand);letter-spacing:.08em;text-transform:uppercase} .lesson-head h2{font-size:25px;margin:4px 0 4px;letter-spacing:-.02em} .lesson-head p{margin:0;color:var(--muted)} .file-pill{white-space:nowrap;background:#eef2ff;color:#3730a3;border:1px solid #c7d2fe;border-radius:999px;padding:8px 12px;font-size:13px;font-weight:800;margin-right:50px} .runbox{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:#fffbeb;border:1px solid #fde68a;border-radius:16px;padding:12px 14px;margin:12px 0} .runbox strong{color:#92400e} .runbox code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;background:white;border:1px solid #fde68a;border-radius:10px;padding:5px 8px} .code-wrap{position:relative;margin-top:14px} pre{margin:0;background:linear-gradient(180deg,var(--code),var(--code2));color:#e5e7eb;border-radius:18px;padding:22px;overflow:auto;font-size:14px;line-height:1.55;tab-size:4} .copy-btn{position:absolute;right:10px;top:10px;border:0;border-radius:999px;padding:7px 10px;background:#ffffff;color:#111827;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.18)} .copy-btn.done{background:#dcfce7;color:#166534} .tip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px} .tip{padding:18px;border-radius:20px;background:white;border:1px solid var(--line)} .tip b{display:block;margin-bottom:6px} .footer{margin-top:40px;padding:22px;border-radius:22px;background:#111827;color:#dbeafe} @media (max-width:900px){.layout{display:block} aside{position:relative;height:auto} nav{grid-template-columns:repeat(2,1fr)} main{padding:24px 18px 60px} .hero{padding:30px 22px} .hero-grid,.setup-grid,.tip-grid{grid-template-columns:1fr} .lesson-head{display:block} .file-pill{display:inline-block;margin:10px 0 0}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside>
+  <div class="brand"><div class="logo">St</div><div><h1>Streamlit 실습 로드맵</h1><p>기초 → 위젯 → 레이아웃 → 대시보드</p></div></div>
+  <nav><a href="#ex01"><span>01</span>기본 제목과 문장 출력</a><a href="#ex02"><span>02</span>title / header / subheader / divider</a><a href="#ex03"><span>03</span>코드 블록과 버튼</a><a href="#ex04"><span>04</span>이미지 출력</a><a href="#ex05"><span>05</span>DataFrame 출력</a><a href="#ex06"><span>06</span>입력 위젯 1: checkbox / radio / selectbox</a><a href="#ex07"><span>07</span>입력 위젯 2: multiselect / slider</a><a href="#ex08"><span>08</span>입력창과 파일 업로더</a><a href="#ex09"><span>09</span>레이아웃: sidebar / columns / tabs</a><a href="#ex10"><span>10</span>실전 예제: 코로나19 한국 대시보드</a></nav>
+  <div class="side-note">GitHub Pages 업로드용 단일 HTML입니다.<br>파일명 예: <b>streamlit-basic.html</b></div>
+</aside>
+<main>
+  <section class="hero">
+    <span class="badge">🐍 Python · Streamlit · Pandas · Plotly</span>
+    <h1>Streamlit 기초부터<br>실전 대시보드까지</h1>
+    <p>VS Code에서 파일을 만들고, <b>streamlit run</b>으로 실행하고, 입력 위젯·파일 업로더·레이아웃·시각화 대시보드까지 한 번에 따라가는 수업용 웹페이지입니다.</p>
+    <div class="hero-grid">
+      <div class="mini"><strong>10개</strong><span>실습 파일</span></div>
+      <div class="mini"><strong>복사</strong><span>코드 원클릭</span></div>
+      <div class="mini"><strong>GitHub</strong><span>Pages 배포 가능</span></div>
+      <div class="mini"><strong>학생용</strong><span>실습 체크 흐름</span></div>
+    </div>
+  </section>
+
+  <section class="section-title"><h2>수업 시작 전 준비</h2><p>학생들이 제일 많이 막히는 부분은 “파일 위치”와 “가상환경 활성화”입니다. 여기만 잡으면 절반은 이긴 겁니다. 거의 보스전 전 세이브 포인트입니다.</p></section>
+  <div class="setup-grid">
+    <div class="panel"><h3>폴더 구조</h3>
+      <div class="folder-tree" aria-label="Streamlit 실습 폴더 구조">
+        <ul>
+          <li><span class="tree-root">📁 STREAMLIT_LABS</span>
+            <ul>
+              <li><span class="tree-folder">📁 .venv</span> <span class="tree-muted">가상환경 폴더</span></li>
+              <li><span class="tree-folder">📁 input</span>
+                <ul>
+                  <li><span class="tree-file">🖼️ egg.png</span></li>
+                  <li><span class="tree-file">🖼️ image2.jpg</span></li>
+                  <li><span class="tree-file">🖼️ image3.jpg</span></li>
+                  <li><span class="tree-file">📄 medical_cost.csv</span></li>
+                </ul>
+              </li>
+              <li><span class="tree-file">🐍 01_basic.py</span></li>
+              <li><span class="tree-file">🐍 02_basic.py</span></li>
+              <li><span class="tree-file">🐍 03_basic.py</span></li>
+              <li><span class="tree-file">🐍 04_basic.py</span></li>
+              <li><span class="tree-file">🐍 ...</span></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="panel"><h3>실행 순서</h3><ul class="check"><li>VS Code에서 프로젝트 폴더 열기</li><li>터미널에서 가상환경 확인</li><li>필요 라이브러리 설치</li><li>예제 하나 실행 후 Ctrl + C로 종료</li></ul></div>
+  </div>
+
+  <section class="section-title"><h2>기본 명령어</h2><p>Git Bash 기준으로 통일해서 안내하면 강의 흐름이 깔끔합니다.</p></section>
+  <div class="panel"><div class="cmd">source .venv/Scripts/activate
+uv add streamlit pandas pillow matplotlib seaborn plotly
+streamlit run 01_basic.py
+# 종료: Ctrl + C</div></div>
+
+  <section class="section-title"><h2>실습 예제</h2><p>아래 코드는 각 파일에 그대로 붙여넣어 실행할 수 있습니다.</p></section>
+  
+<section id="ex01" class="lesson-card" data-step="01">
+  <div class="lesson-head">
+    <div><span class="eyebrow">실습 01</span><h2>기본 제목과 문장 출력</h2><p>Streamlit 앱의 첫 화면을 만들고 실행합니다.</p></div>
+    <div class="file-pill">01_basic.py</div>
+  </div>
+  <div class="runbox"><strong>실행 명령</strong><code>streamlit run 01_basic.py</code></div>
+  <div class="code-wrap"><button class="copy-btn" data-copy>복사</button><pre><code class="language-python">import streamlit as st
+
+st.title(&quot;내 생애 첫 대시보드&quot;)
+st.write(&quot;파이썬 코드가 웹사이트가 되었습니다!&quot;)</code></pre></div>
+</section>
+<section id="ex02" class="lesson-card" data-step="02">
+  <div class="lesson-head">
+    <div><span class="eyebrow">실습 02</span><h2>title / header / subheader / divider</h2><p>제목 계층, 색상 텍스트, 이모지, 구분선을 비교합니다.</p></div>
+    <div class="file-pill">02_basic.py</div>
+  </div>
+  <div class="runbox"><strong>실행 명령</strong><code>streamlit run 02_basic.py</code></div>
+  <div class="code-wrap"><button class="copy-btn" data-copy>복사</button><pre><code class="language-python">import streamlit as st
+
+st.title(&quot;This is title&quot;)
+st.title(&quot;_이탤릭체 제목_ :blue[파랑색] 그리고 선글라스 이모지 :sunglasses:&quot;)
+
+st.header(&quot;This is header&quot;)
+st.header(&quot;_이탤릭체 헤더_ :red[빨강색] 그리고 선글라스 이모지 :sunglasses:&quot;)
+
+st.subheader(&quot;This is subheader&quot;)
+st.subheader(&quot;_이탤릭체 서브헤더_ :green[초록색] 그리고 선글라스 이모지 :sunglasses:&quot;)
+
+st.text(&quot;이것은 텍스트입니다!&quot;)
+st.divider()
+st.write(&quot;---&quot;)</code></pre></div>
+</section>
+<section id="ex03" class="lesson-card" data-step="03">
+  <div class="lesson-head">
+    <div><span class="eyebrow">실습 03</span><h2>코드 블록과 버튼</h2><p>코드 표시와 버튼 클릭 이벤트를 실습합니다.</p></div>
+    <div class="file-pill">03_basic.py</div>
+  </div>
+  <div class="runbox"><strong>실행 명령</strong><code>streamlit run 03_basic.py</code></div>
+  <div class="code-wrap"><button class="copy-btn" data-copy>복사</button><pre><code class="language-python">import streamlit as st
+
+code = &#x27;&#x27;&#x27;
+import seaborn as sns
+
+iris = sns.load_dataset(&#x27;iris&#x27;)
+sns.pairplot(data=iris, hue=&#x27;species&#x27;, corner=True)
+plt.show()
+&#x27;&#x27;&#x27;
+
+st.code(code, language=&#x27;python&#x27;)
+
+def button_write():
+    st.write(&#x27;button activated&#x27;)
+
+st.button(&#x27;Reset&#x27;, type=&#x27;primary&#x27;)
+st.button(&#x27;activate&#x27;, on_click=button_write)
+
+if st.button(&#x27;Reset&#x27;, type=&#x27;primary&#x27;, key=&#x27;btn1&#x27;):
+    st.write(&quot;Reset clicked!&quot;)
+
+if st.button(&#x27;Cancel&#x27;, type=&#x27;secondary&#x27;, key=&#x27;btn2&#x27;):
+    st.write(&quot;Cancel clicked!&quot;)
+
+if st.button(&#x27;Ignore&#x27;, type=&#x27;tertiary&#x27;, key=&#x27;btn3&#x27;):
+    st.write(&quot;Ignore clicked!&quot;)</code></pre></div>
+</section>
+<section id="ex04" class="lesson-card" data-step="04">
+  <div class="lesson-head">
+    <div><span class="eyebrow">실습 04</span><h2>이미지 출력</h2><p>Pillow로 이미지를 열고 st.image의 너비 옵션을 비교합니다.</p></div>
+    <div class="file-pill">04_basic.py</div>
+  </div>
+  <div class="runbox"><strong>실행 명령</strong><code>streamlit run 04_basic.py</code></div>
+  <div class="code-wrap"><button class="copy-btn" data-copy>복사</button><pre><code class="language-python">import streamlit as st
+from PIL import Image
+
+image = Image.open(&quot;./input/egg.png&quot;)
+
+st.image(image, caption=&quot;egg_image&quot;)
+st.image(image, caption=&quot;width-&gt;100&quot;, width=100)
+st.image(image, caption=&quot;width-&gt;200&quot;, width=200)
+st.image(image, caption=&quot;전체 너비&quot;, width=&quot;stretch&quot;)
+st.image(image, caption=&quot;원본 크기&quot;, width=&quot;content&quot;)
+
+small_image = image.resize((200, 200))
+st.image(small_image, caption=&quot;stretch - 전체너비&quot;, width=&quot;stretch&quot;)
+st.image(small_image, caption=&quot;content - 원본크기(200px)&quot;, width=&quot;content&quot;)</code></pre></div>
+</section>
+<section id="ex05" class="lesson-card" data-step="05">
+  <div class="lesson-head">
+    <div><span class="eyebrow">실습 05</span><h2>DataFrame 출력</h2><p>st.dataframe과 st.table의 차이를 확인합니다.</p></div>
+    <div class="file-pill">05_basic.py</div>
+  </div>
+  <div class="runbox"><strong>실행 명령</strong><code>streamlit run 05_basic.py</code></div>
+  <div class="code-wrap"><button class="copy-btn" data-copy>복사</button><pre><code class="language-python">import streamlit as st
+import pandas as pd
+
+df_menu = pd.DataFrame({
+    &quot;메뉴명&quot;: [&quot;아메리카노&quot;, &quot;카페라떼&quot;, &quot;카푸치노&quot;, &quot;말차라떼&quot;],
+    &quot;가격&quot;: [4500, 5000, 5500, 6000]
+})
+
+st.dataframe(df_menu, height=170, width=&quot;stretch&quot;)
+st.dataframe(df_menu, height=170, width=&quot;content&quot;)
+st.dataframe(df_menu, height=170, width=400)
+
+st.divider()
+st.table(df_menu)</code></pre></div>
+</section>
+<section id="ex06" class="lesson-card" data-step="06">
+  <div class="lesson-head">
+    <div><span class="eyebrow">실습 06</span><h2>입력 위젯 1: checkbox / radio / selectbox</h2><p>선택값에 따라 다른 결과를 출력하는 기초 인터랙션입니다.</p></div>
+    <div class="file-pill">06_interactive.py</div>
+  </div>
+  <div class="runbox"><strong>실행 명령</strong><code>streamlit run 06_interactive.py</code></div>
+  <div class="code-wrap"><button class="copy-btn" data-copy>복사</button><pre><code class="language-python">import streamlit as st
+
+st.title(&quot;간단한 Streamlit 퀴즈!&quot;)
+
+agree = st.checkbox(&quot;Q1. 파이썬은 프로그래밍 언어이다.(맞으면 체크)&quot;)
+if agree:
+    st.write(&quot;정답입니다!&quot;)
+
+st.divider()
+
+person = st.radio(&quot;Q2. 당신의 성별은??&quot;, [&quot;남자&quot;, &quot;여자&quot;])
+if person == &quot;남자&quot;:
+    st.write(&quot;당신은 남자입니다!&quot;)
+else:
+    st.write(&quot;당신은 여자입니다!&quot;)
+
+st.divider()
+
+transport = st.selectbox(
+    &quot;Q3. 가장 빠른 교통수단은??&quot;,
+    [&quot;기차&quot;, &quot;자동차&quot;, &quot;비행기&quot;, &quot;배&quot;]
+)
+
+if transport == &quot;비행기&quot;:
+    st.write(&quot;정답! 비행기가 가장 빠릅니다!&quot;)
+else:
+    st.write(&quot;땡! 틀렸습니다! 비행기가 가장 빨라요~~&quot;)</code></pre></div>
+</section>
+<section id="ex07" class="lesson-card" data-step="07">
+  <div class="lesson-head">
+    <div><span class="eyebrow">실습 07</span><h2>입력 위젯 2: multiselect / slider</h2><p>복수 선택, 숫자 슬라이더, 시간 범위 슬라이더를 실습합니다.</p></div>
+    <div class="file-pill">07_multiselect_slider.py</div>
+  </div>
+  <div class="runbox"><strong>실행 명령</strong><code>streamlit run 07_multiselect_slider.py</code></div>
+  <div class="code-wrap"><button class="copy-btn" data-copy>복사</button><pre><code class="language-python">import streamlit as st
+from datetime import time
+
+st.title(&quot;Streamlit 입력 위젯 실습&quot;)
+st.divider()
+
+st.subheader(&quot;1. 다중 선택 박스 퀴즈&quot;)
+fruits = st.multiselect(
+    &quot;Q1. 과일을 모두 선택하세요 (복수 정답 가능):&quot;,
+    [&quot;사과&quot;, &quot;토마토&quot;, &quot;당근&quot;, &quot;바나나&quot;]
+)
+
+correct = {&quot;사과&quot;, &quot;토마토&quot;, &quot;바나나&quot;}
+
+if set(fruits) == correct:
+    st.write(&quot;완벽해요! 모두 맞았습니다.&quot;)
+else:
+    st.write(&quot;다시 선택해보세요!&quot;)
+
+st.divider()
+st.subheader(&quot;2. 숫자 슬라이더&quot;)
+score = st.slider(&quot;Your score is...&quot;, 0, 100, 1)
+st.text(f&quot;Score :{score}&quot;)
+
+st.divider()
+st.subheader(&quot;3. 시간 범위 슬라이더&quot;)
+start_time, end_time = st.slider(
+    &quot;Working time is ...&quot;,
+    min_value=time(0),
+    max_value=time(23),
+    value=(time(9), time(18)),
+    format=&quot;HH:mm&quot;
+)
+st.text(f&quot;Working time :{start_time},{end_time}&quot;)</code></pre></div>
+</section>
+<section id="ex08" class="lesson-card" data-step="08">
+  <div class="lesson-head">
+    <div><span class="eyebrow">실습 08</span><h2>입력창과 파일 업로더</h2><p>text_input으로 값을 받고 CSV 파일을 업로드해 표로 출력합니다.</p></div>
+    <div class="file-pill">08_input_uploader.py</div>
+  </div>
+  <div class="runbox"><strong>실행 명령</strong><code>streamlit run 08_input_uploader.py</code></div>
+  <div class="code-wrap"><button class="copy-btn" data-copy>복사</button><pre><code class="language-python">import streamlit as st
+import pandas as pd
+
+# 1. 텍스트 입력 창: 좋아하는 포켓몬 이름 받기
+string1 = st.text_input(
+    &#x27;좋아하는 포켓몬은??&#x27;,
+    placeholder=&#x27;당신이 가장 좋아하는 포켓몬 이름을 적어주세요!&#x27;,
+    max_chars=32
+)
+
+if string1:
+    st.text(f&#x27;Your answer is {string1}&#x27;)
+
+# 2. 비밀번호 입력 창: 싫어하는 음식 받기
+string2 = st.text_input(
+    &#x27;싫어하는 음식은??&#x27;,
+    placeholder=&#x27;당신이 가장 싫어하는 음식을 하나 적어주세요!&#x27;,
+    max_chars=32,
+    type=&#x27;password&#x27;
+)
+
+if string2:
+    st.text(f&#x27;Your answer is {string2}&#x27;)
+
+# 3. 파일 업로더: CSV 파일만 업로드 가능
+file = st.file_uploader(
+    &#x27;Choose a file&#x27;,
+    type=&#x27;csv&#x27;,
+    accept_multiple_files=False
+)
+
+if file is not None:
+    df = pd.read_csv(file)
+    st.write(df)</code></pre></div>
+</section>
+<section id="ex09" class="lesson-card" data-step="09">
+  <div class="lesson-head">
+    <div><span class="eyebrow">실습 09</span><h2>레이아웃: sidebar / columns / tabs</h2><p>사이드바, 컬럼, 탭을 이용해 화면을 구조화합니다.</p></div>
+    <div class="file-pill">09_layout.py</div>
+  </div>
+  <div class="runbox"><strong>실행 명령</strong><code>streamlit run 09_layout.py</code></div>
+  <div class="code-wrap"><button class="copy-btn" data-copy>복사</button><pre><code class="language-python">import streamlit as st
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from PIL import Image
+
+st.title(&#x27;This is main page&#x27;)
+
+with st.sidebar:
+    st.title(&#x27;This is sidebar&#x27;)
+    side_option = st.multiselect(
+        label=&#x27;your selection is&#x27;,
+        options=[&#x27;Car&#x27;, &#x27;Airplane&#x27;, &#x27;Train&#x27;, &#x27;Ship&#x27;, &#x27;Bicycle&#x27;],
+        placeholder=&#x27;select transportation&#x27;
+    )
+
+img2 = Image.open(&#x27;./input/image2.jpg&#x27;)
+img3 = Image.open(&#x27;./input/image3.jpg&#x27;)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.header(&#x27;Lemonade&#x27;)
+    st.image(img2, width=300, caption=&#x27;Image from Unsplash&#x27;)
+
+with col2:
+    st.header(&#x27;Cocktail&#x27;)
+    st.image(img3, width=300, caption=&#x27;Image from Unsplash&#x27;)
+
+tab1, tab2 = st.tabs([&#x27;Table&#x27;, &#x27;Graph&#x27;])
+
+df = pd.read_csv(&#x27;./input/medical_cost.csv&#x27;)
+df = df.query(&#x27;region == &quot;northwest&quot;&#x27;)
+
+with tab1:
+    st.table(df.head(5))
+
+with tab2:
+    fig, ax = plt.subplots()
+    sns.scatterplot(data=df, x=&#x27;bmi&#x27;, y=&#x27;charges&#x27;, ax=ax)
+    st.pyplot(fig)</code></pre></div>
+</section>
+<section id="ex10" class="lesson-card" data-step="10">
+  <div class="lesson-head">
+    <div><span class="eyebrow">실습 10</span><h2>실전 예제: 코로나19 한국 대시보드</h2><p>CSV 3개를 업로드하고 Plotly로 대시보드를 만듭니다.</p></div>
+    <div class="file-pill">10_covid19.py</div>
+  </div>
+  <div class="runbox"><strong>실행 명령</strong><code>uv add plotly
+streamlit run 10_covid19.py</code></div>
+  <div class="code-wrap"><button class="copy-btn" data-copy>복사</button><pre><code class="language-python">&quot;&quot;&quot;
+코로나19 한국 대시보드
+=====================
+Johns Hopkins University의 COVID-19 공개 데이터셋을 활용하여
+대한민국의 확진자 / 사망자 / 회복자 현황을 시각화하는 Streamlit 앱입니다.
+
+사용 데이터 (GitHub에서 다운로드):
+  - time_series_covid19_confirmed_global.csv  (확진자)
+  - time_series_covid19_deaths_global.csv     (사망자)
+  - time_series_covid19_recovered_global.csv  (회복자)
+
+실행 방법:
+  streamlit run 10_covid19.py
+
+핵심 학습 포인트:
+  1. st.file_uploader  : 파일 업로드 위젯
+  2. pd.read_csv       : CSV → DataFrame 변환
+  3. DataFrame 가공    : 필터링, 열 삭제, 합산, 병합, diff()
+  4. st.tabs           : 탭 UI
+  5. st.multiselect    : 다중 선택 위젯
+  6. plotly.express    : 인터랙티브 선/막대/파이 그래프
+  7. label_map 패턴   : UI 표시 이름과 DataFrame 열 이름 분리
+&quot;&quot;&quot;
+
+import streamlit as st       # 웹 앱 프레임워크
+import pandas as pd           # 데이터 처리
+import plotly.express as px   # 인터랙티브 차트
+
+
+# ──────────────────────────────────────────────────────────────
+# 1. 페이지 기본 설정
+# ──────────────────────────────────────────────────────────────
+# set_page_config()는 반드시 다른 st 명령보다 먼저 호출해야 함
+st.set_page_config(
+    page_title=&quot;코로나19 한국 대시보드&quot;,   # 브라우저 탭에 표시될 제목
+    layout=&quot;wide&quot;                          # &quot;wide&quot; : 전체 화면 너비 사용
+                                           # &quot;centered&quot;(기본값) : 중앙 고정 폭
+)
+st.title(&quot;🇰🇷 코로나19 한국 감염자 대시보드&quot;)   # 앱 최상단 제목
+
+
+# ──────────────────────────────────────────────────────────────
+# 2. 파일 업로더
+# ──────────────────────────────────────────────────────────────
+# st.file_uploader() : 파일을 드래그&amp;드롭 또는 클릭으로 올릴 수 있는 위젯
+# - type=[&quot;csv&quot;] : CSV 파일만 허용 (확장자 제한)
+# - 파일이 업로드되지 않은 상태에서는 None 반환
+# - 업로드된 파일은 BytesIO 객체로 반환 → pd.read_csv()에 바로 전달 가능
+uploaded_confirmed = st.file_uploader(&quot;확진자 CSV 업로드&quot;, type=[&quot;csv&quot;])
+uploaded_deaths    = st.file_uploader(&quot;사망자 CSV 업로드&quot;, type=[&quot;csv&quot;])
+uploaded_recovered = st.file_uploader(&quot;회복자 CSV 업로드&quot;, type=[&quot;csv&quot;])
+
+
+# ──────────────────────────────────────────────────────────────
+# 3. 세 파일이 모두 업로드됐을 때만 분석 실행
+# ──────────────────────────────────────────────────────────────
+# 업로드 전 : 파일 객체 = None → 조건 False → 아래 블록 건너뜀
+# 업로드 후 : 파일 객체 존재 → 조건 True  → 분석 실행
+if uploaded_confirmed and uploaded_deaths and uploaded_recovered:
+
+    # CSV 파일 → DataFrame으로 읽기
+    # pd.read_csv()는 파일 경로 대신 업로드 객체(BytesIO)도 바로 처리 가능
+    df_confirmed = pd.read_csv(uploaded_confirmed)
+    df_deaths    = pd.read_csv(uploaded_deaths)
+    df_recovered = pd.read_csv(uploaded_recovered)
+
+
+    # ──────────────────────────────────────────────────────────
+    # 4. 한국 데이터 추출 함수 정의
+    # ──────────────────────────────────────────────────────────
+    def get_korea_data(df, value_name):
+        &quot;&quot;&quot;
+        글로벌 DataFrame에서 대한민국 행만 추출하여
+        날짜-값 형태의 깔끔한 DataFrame으로 반환합니다.
+
+        Parameters
+        ----------
+        df         : 원본 글로벌 DataFrame (confirmed / deaths / recovered)
+        value_name : 결과 열 이름 문자열 (예: &#x27;confirmed&#x27;, &#x27;deaths&#x27;, &#x27;recovered&#x27;)
+
+        Returns
+        -------
+        DataFrame with columns [&#x27;date&#x27;, value_name]
+
+        원본 데이터 구조 예시:
+        | Province/State | Country/Region | Lat  | Long  | 1/22/20 | 1/23/20 | ...
+        |----------------|----------------|------|-------|---------|---------|----
+        | NaN            | Korea, South   | 36.0 | 128.0 | 1       | 1       | ...
+        &quot;&quot;&quot;
+
+        # ① 대한민국 행 필터링
+        #    원본 데이터의 국가명 표기: &quot;Korea, South&quot;
+        korea_df = df[df[&quot;Country/Region&quot;] == &quot;Korea, South&quot;]
+
+        # ② 분석에 불필요한 열 제거
+        #    Province/State, Country/Region, Lat, Long 은 날짜-수치 분석에 불필요
+        korea_df = korea_df.drop(columns=[&quot;Province/State&quot;, &quot;Country/Region&quot;, &quot;Lat&quot;, &quot;Long&quot;])
+
+        # ③ 날짜별 합산
+        #    같은 국가라도 Province(지역)가 여러 행으로 나뉠 수 있음 → .sum()으로 합산
+        #    .sum() 결과는 Series → .reset_index()로 날짜 문자열을 열로 변환
+        korea_series = korea_df.sum().reset_index()
+
+        # ④ 열 이름 지정
+        #    reset_index() 후 열 이름이 0, 1 등 숫자로 지정됨 → 의미 있는 이름으로 변경
+        korea_series.columns = [&#x27;date&#x27;, value_name]
+
+        # ⑤ 날짜 문자열 → datetime 타입 변환
+        #    원본 형식 예시: &quot;1/22/20&quot;
+        #    format=&#x27;%m/%d/%y&#x27; 를 명시해야 파싱 오류 없이 변환됨
+        #      %m : 월(01~12)   %d : 일(01~31)   %y : 연도 끝 2자리(20 → 2020)
+        korea_series[&#x27;date&#x27;] = pd.to_datetime(korea_series[&#x27;date&#x27;], format=&#x27;%m/%d/%y&#x27;)
+
+        return korea_series
+
+
+    # 세 DataFrame을 각각 한국 데이터로 변환
+    df_confirmed = get_korea_data(df_confirmed, &#x27;confirmed&#x27;)
+    df_deaths    = get_korea_data(df_deaths,    &#x27;deaths&#x27;)
+    df_recovered = get_korea_data(df_recovered, &#x27;recovered&#x27;)
+
+
+    # ──────────────────────────────────────────────────────────
+    # 5. 세 DataFrame 병합 (merge)
+    # ──────────────────────────────────────────────────────────
+    # &#x27;date&#x27; 열을 기준(on=&#x27;date&#x27;)으로 inner join (기본값)
+    # 확진자 ← 사망자 ← 회복자 순서로 순차 병합
+    # 결과 열 구성: date | confirmed | deaths | recovered
+    df_merged = df_confirmed.merge(df_deaths, on=&#x27;date&#x27;).merge(df_recovered, on=&#x27;date&#x27;)
+
+    # datetime → date 타입으로 변환
+    # 이유: datetime 타입은 차트 x축에 &quot;2020-01-22 00:00:00&quot; 처럼 시간이 붙어 표시됨
+    #       .dt.date 로 변환하면 &quot;2020-01-22&quot; 형태로 깔끔하게 표시됨
+    df_merged[&#x27;date&#x27;] = df_merged[&#x27;date&#x27;].dt.date
+
+
+    # ──────────────────────────────────────────────────────────
+    # 6. 일일 신규 수치 계산
+    # ──────────────────────────────────────────────────────────
+    # .diff()  : 현재 행 - 이전 행 (전날 대비 증가량)
+    #            첫 번째 행은 이전 행이 없어 NaN 발생 → fillna(0)으로 0 처리
+    # .astype(int) : diff() 후 float 타입이 됨 → 소수점 제거를 위해 int로 변환
+    df_merged[&#x27;new_confirmed&#x27;] = df_merged[&#x27;confirmed&#x27;].diff().fillna(0).astype(int)
+    df_merged[&#x27;new_deaths&#x27;]    = df_merged[&#x27;deaths&#x27;].diff().fillna(0).astype(int)
+    df_merged[&#x27;new_recovered&#x27;] = df_merged[&#x27;recovered&#x27;].diff().fillna(0).astype(int)
+
+    # 최종 df_merged 열 구성:
+    # date | confirmed | deaths | recovered | new_confirmed | new_deaths | new_recovered
+
+
+    # ──────────────────────────────────────────────────────────
+    # 7. 탭 UI 구성
+    # ──────────────────────────────────────────────────────────
+    # st.tabs() : 탭 레이블 리스트를 넘기면 탭 객체 리스트 반환
+    # with 블록 안에 작성한 요소가 해당 탭 영역에만 표시됨
+    tab1, tab2, tab3 = st.tabs([&quot;📈 감염 추이&quot;, &quot;📊 통계 요약&quot;, &quot;⚖️ 비율 분석&quot;])
+
+
+    # ── Tab 1 : 감염 추이 ────────────────────────────────────
+    with tab1:
+
+        # ────────────────────────────────────────────────────
+        # [핵심 패턴] label_map : UI 표시 이름 ↔ DataFrame 열 이름 분리
+        # ────────────────────────────────────────────────────
+        # 문제:
+        #   multiselect의 options에 &#x27;confirmed&#x27; 같은 영어 열 이름을 직접 넣으면
+        #   화면에 영어가 그대로 노출되어 사용자가 알아보기 어려움
+        #
+        # 해결:
+        #   dict(사전)으로 한글 레이블 → 영어 열 이름 매핑 테이블을 만든다.
+        #   { &#x27;화면에 보일 한글 이름&#x27;: &#x27;실제 DataFrame 열 이름&#x27; }
+        #
+        #   multiselect에는 dict의 키(한글)를 보여주고,
+        #   사용자가 선택한 한글을 dict로 조회해 영어 열 이름으로 변환 후 사용
+        # ────────────────────────────────────────────────────
+
+        # ① 누적 추이 (선 그래프) ─────────────────────────────
+        st.subheader(&quot;📈 누적 추이 그래프&quot;)
+
+        # 누적 데이터용 매핑 사전
+        label_map = {
+            &#x27;확진자&#x27;: &#x27;confirmed&#x27;,
+            &#x27;사망자&#x27;: &#x27;deaths&#x27;,
+            &#x27;회복자&#x27;: &#x27;recovered&#x27;
+        }
+
+        # st.multiselect : 체크박스 형태의 다중 선택 위젯
+        # options : list(label_map.keys()) → [&#x27;확진자&#x27;, &#x27;사망자&#x27;, &#x27;회복자&#x27;] (한글만 표시)
+        # default : 앱 시작 시 미리 선택될 항목
+        selected_labels = st.multiselect(
+            &quot;표시할 항목을 선택하세요&quot;,
+            options=list(label_map.keys()),
+            default=[&#x27;확진자&#x27;, &#x27;회복자&#x27;]
+        )
+
+        if selected_labels:  # 하나 이상 선택됐을 때만 그래프 출력
+            # 선택된 한글 레이블 리스트 → 영어 열 이름 리스트로 변환
+            # 예) [&#x27;확진자&#x27;, &#x27;회복자&#x27;] → [&#x27;confirmed&#x27;, &#x27;recovered&#x27;]
+            selected_cols = [label_map[label] for label in selected_labels]
+
+            # px.line : Plotly 선 그래프
+            # y=selected_cols  : 영어 열 이름으로 DataFrame에서 데이터 조회
+            # labels           : 차트 내부(범례, 축 툴팁)에 표시될 이름을 한글로 변환
+            #   { &#x27;영어 열 이름&#x27;: &#x27;한글 표시 이름&#x27; } 형태 필요
+            #   → dict comprehension으로 label_map을 뒤집어서 생성
+            #   → { &#x27;confirmed&#x27;: &#x27;확진자&#x27;, &#x27;deaths&#x27;: &#x27;사망자&#x27;, &#x27;recovered&#x27;: &#x27;회복자&#x27; }
+            fig = px.line(
+                df_merged,
+                x=&quot;date&quot;,
+                y=selected_cols,
+                markers=True,   # 각 날짜 지점에 점(marker) 표시
+                labels={col: kor for kor, col in label_map.items()}
+            )
+            st.plotly_chart(fig, width=&#x27;stretch&#x27;)  # width=&#x27;stretch&#x27; : 컨테이너 전체 너비
+
+        # ② 일일 신규 수치 (막대 그래프) ─────────────────────
+        st.subheader(&quot;🆕 일일 증가량 그래프&quot;)
+
+        # 신규 데이터용 매핑 사전 (구조는 누적용과 동일)
+        new_label_map = {
+            &#x27;신규 확진자&#x27;: &#x27;new_confirmed&#x27;,
+            &#x27;신규 사망자&#x27;: &#x27;new_deaths&#x27;,
+            &#x27;신규 회복자&#x27;: &#x27;new_recovered&#x27;
+        }
+
+        selected_new_labels = st.multiselect(
+            &quot;표시할 항목 (신규)&quot;,
+            options=list(new_label_map.keys()),
+            default=[&#x27;신규 확진자&#x27;]
+        )
+
+        if selected_new_labels:
+            # 선택된 한글 레이블 → 영어 열 이름으로 변환
+            selected_new_cols = [new_label_map[label] for label in selected_new_labels]
+
+            # px.bar : Plotly 막대 그래프
+            # labels 파라미터로 범례·축 툴팁을 한글로 표시
+            fig_new = px.bar(
+                df_merged,
+                x=&quot;date&quot;,
+                y=selected_new_cols,
+                labels={col: kor for kor, col in new_label_map.items()}
+            )
+            st.plotly_chart(fig_new, width=&#x27;stretch&#x27;)
+
+
+    # ── Tab 2 : 통계 요약 ────────────────────────────────────
+    with tab2:
+        st.subheader(&quot;📋 일자별 통계 테이블&quot;)
+
+        # .tail(10) : 가장 최근 10일 데이터만 슬라이싱
+        # st.dataframe : 정렬·검색이 가능한 인터랙티브 테이블로 렌더링
+        st.dataframe(df_merged.tail(10), width=&#x27;stretch&#x27;)
+
+
+    # ── Tab 3 : 비율 분석 ────────────────────────────────────
+    with tab3:
+        st.subheader(&quot;⚖️ 최신일 기준 회복률 / 치명률&quot;)
+
+        # .iloc[-1] : 인덱스 기준 마지막 행 = 가장 최근 날짜 데이터
+        latest    = df_merged.iloc[-1]
+        confirmed = latest[&#x27;confirmed&#x27;]
+        deaths    = latest[&#x27;deaths&#x27;]
+        recovered = latest[&#x27;recovered&#x27;]
+
+        # 비율 계산 (0으로 나누기 방지: confirmed가 0이면 비율도 0으로 처리)
+        recovery_rate = (recovered / confirmed) * 100 if confirmed else 0
+        fatality_rate = (deaths    / confirmed) * 100 if confirmed else 0
+
+        # st.columns(2) : 화면을 2열로 균등 분할
+        col1, col2 = st.columns(2)
+
+        # st.metric : 수치를 강조해서 보여주는 카드형 위젯
+        # f&quot;{값:.2f} %&quot; : 소수점 2자리까지 표시
+        col1.metric(&quot;✅ 회복률&quot;, f&quot;{recovery_rate:.2f} %&quot;)
+        col2.metric(&quot;☠️ 치명률&quot;, f&quot;{fatality_rate:.2f} %&quot;)
+
+        st.subheader(&quot;📊 감염자 분포 비율&quot;)
+
+        # 파이차트용 데이터 직접 생성
+        # active(격리중) = 확진자 - 회복자 - 사망자 (현재 치료/격리 중인 인원)
+        pie_df = pd.DataFrame({
+            &#x27;category&#x27;: [&#x27;회복자&#x27;, &#x27;사망자&#x27;, &#x27;격리중&#x27;],
+            &#x27;count&#x27;:    [recovered, deaths, confirmed - recovered - deaths]
+        })
+
+        # px.pie : Plotly 파이 차트
+        # names=&#x27;category&#x27; : 범례에 표시될 항목 이름 열
+        # values=&#x27;count&#x27;   : 각 항목의 수치 열
+        fig_pie = px.pie(pie_df, names=&#x27;category&#x27;, values=&#x27;count&#x27;, title=&#x27;감염자 분포&#x27;)
+        st.plotly_chart(fig_pie, width=&#x27;stretch&#x27;)
+
+
+# ──────────────────────────────────────────────────────────────
+# 8. 파일 미업로드 상태 안내 메시지
+# ──────────────────────────────────────────────────────────────
+else:
+    # if 조건이 False일 때 (파일 3개 중 하나라도 업로드 안 된 경우)
+    # st.info : 파란색 안내 박스로 사용자에게 다음 행동을 안내
+    st.info(&quot;3개의 CSV 파일(확진자, 사망자, 회복자)을 모두 업로드 해주세요.&quot;)
+</code></pre></div>
+</section>
+
+  <section class="section-title"><h2>자주 발생하는 문제</h2><p>수업 중 질문 폭탄을 줄여주는 방어막입니다. 약간 Streamlit계의 방패막이 주문.</p></section>
+  <div class="tip-grid">
+    <div class="tip"><b>streamlit 명령어를 찾을 수 없음</b>가상환경이 꺼져 있을 가능성이 큽니다. <code>source .venv/Scripts/activate</code> 후 다시 실행합니다.</div>
+    <div class="tip"><b>다른 예제가 안 열림</b>기존 앱이 실행 중일 수 있습니다. 터미널에서 <code>Ctrl + C</code>로 종료합니다.</div>
+    <div class="tip"><b>이미지·CSV 오류</b><code>input</code> 폴더 위치와 파일명을 확인합니다. 경로는 현재 실행하는 py 파일 기준입니다.</div>
+  </div>
+
+  <div class="footer">© 석쌤 Streamlit 수업자료 · GitHub Pages용 HTML · 학생들에게는 “코드보다 실행 흐름”을 먼저 보여주면 이해가 훨씬 빨라집니다.</div>
+</main>
+</div>
+<script>
+document.querySelectorAll('[data-copy]').forEach(btn=>{
+  btn.addEventListener('click', async()=>{
+    const code = btn.parentElement.querySelector('code').innerText;
+    await navigator.clipboard.writeText(code);
+    btn.textContent='복사됨'; btn.classList.add('done');
+    setTimeout(()=>{btn.textContent='복사'; btn.classList.remove('done')},1200);
+  });
+});
+</script>
+</body>
+</html>
