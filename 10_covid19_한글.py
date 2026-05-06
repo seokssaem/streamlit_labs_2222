@@ -121,7 +121,7 @@ if uploaded_confirmed and uploaded_deaths and uploaded_recovered:
     # 7. 탭 UI 구성
     # ──────────────────────────────────────────
     # st.tabs() : 탭 레이블 리스트를 넘기면 탭 객체 리스트 반환
-    # with 블록 안에 작성한 요소가 해당 탭에 표시됨
+    # with 블록 안에 작성한 요소가 해당 탭에 표시됨 
     tab1, tab2, tab3 = st.tabs(["📈 감염 추이", "📊 통계 요약", "⚖️ 비율 분석"])
 
 
@@ -212,4 +212,4 @@ if uploaded_confirmed and uploaded_deaths and uploaded_recovered:
 # ──────────────────────────────────────────────
 else:
     # st.info : 파란색 안내 박스
-    st.info("3개의 CSV 파일(확진자, 사망자, 회복자)을 모두 업로드해주세요.")
+    st.info("3개의 CSV 파일(확진자, 사망자, 회복자)을 모두 업로드 해주세요.") 
